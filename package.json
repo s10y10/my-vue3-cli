@@ -1,0 +1,34 @@
+{
+  "name": "my-vue3-vite-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./bin/index.js",
+  "bin": {
+    "my-cli": "./bin/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/s10y10/my-vue3-vite-cli.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/s10y10/my-vue3-vite-cli/issues"
+  },
+  "homepage": "https://github.com/s10y10/my-vue3-vite-cli#readme",
+  "devDependencies": {
+    "chalk": "4.1.2",
+    "commander": "^9.2.0",
+    "download": "^8.0.0",
+    "fs-extra": "^10.1.0",
+    "handlebars": "^4.7.7",
+    "inquirer": "^8.2.3",
+    "log-symbols": "^5.1.0",
+    "ora": "^6.1.0",
+    "update-notifier": "^5.1.0"
+  }
+}
