@@ -1,14 +1,16 @@
-const fse = require("fs-extra");
-const path = require("path");
+import fse from 'fs-extra';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 // 声明配置文件
 const jsonConfig = {
-  name: "my-vue3-vite-cli",
-  mirror: "https://s10y10.github.io/template/",
+  name: 'sy-cli-vite',
+  mirror: 'https://s10y10.github.io/',
 };
 
 // 拼接config.json完整路径
-const configPath = path.resolve(__dirname, "../config.json");
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const configPath = path.resolve(__dirname, '../config.json');
 
 async function defConfig() {
   try {
@@ -20,4 +22,4 @@ async function defConfig() {
   }
 }
 
-module.exports = defConfig;
+export default defConfig;

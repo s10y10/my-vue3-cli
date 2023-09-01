@@ -1,33 +1,32 @@
-const fse = require("fs-extra");
-const ora = require("ora");
-const chalk = require("chalk");
-const symbols = require("log-symbols");
-const inquirer = require("inquirer");
-const handlebars = require("handlebars");
-const path = require("path");
+import chalk from 'chalk';
+import fse from 'fs-extra';
+import handlebars from 'handlebars';
+import inquirer from 'inquirer';
+import symbols from 'log-symbols';
+import ora from 'ora';
+import path from 'path';
+import dlTemplate from './download.js';
 
-const dlTemplate = require("./download");
-
-async function initProject(projectName) {
+async function createProject(projectName) {
   try {
     const exists = await fse.pathExists(projectName);
     if (exists) {
-      console.log(symbols.error, chalk.red("The project already exists."));
+      console.log(symbols.error, chalk.red('The project already exists.'));
     } else {
       inquirer
         .prompt([
           {
-            type: "input",
-            name: "name",
-            message: "Set a global name for javascript plugin?",
-            default: "Default",
+            type: 'input',
+            name: 'name',
+            message: 'Set a global name for javascript plugin?',
+            default: 'Default',
           },
         ])
         .then(async (answers) => {
-          const initSpinner = ora(chalk.cyan("Initializing project..."));
+          const initSpinner = ora(chalk.cyan('Initializing project...'));
           initSpinner.start();
 
-          const templatePath = path.resolve(__dirname, "../template/");
+          const templatePath = path.resolve(__dirname, '../template/');
           const processPath = process.cwd();
 
           const LCProjectName = projectName.toLowerCase();
@@ -60,7 +59,7 @@ async function initProject(projectName) {
 
           for (let i = 0; i < multiFiles.length; i++) {
             try {
-              const filesContent = await fse.readFile(multiFiles[i], "utf8");
+              const filesContent = await fse.readFile(multiFiles[i], 'utf8');
               const filesResult = await handlebars.compile(filesContent)(
                 multiMeta
               );
@@ -71,14 +70,14 @@ async function initProject(projectName) {
               process.exit();
             }
           }
-          initSpinner.text = "Initialize project successful.";
+          initSpinner.text = 'Initialize project successful.';
           initSpinner.succeed();
           console.log(`
             To get started:
 
               cd ${chalk.yellow(LCProjectName)}
-              ${chalk.yellow("npm install")} or ${chalk.yellow("yarn install")}
-              ${chalk.yellow("npm run dev")} or ${chalk.yellow("yarn run dev")}
+              ${chalk.yellow('npm install')} or ${chalk.yellow('yarn install')}
+              ${chalk.yellow('npm run dev')} or ${chalk.yellow('yarn run dev')}
           `);
         })
         .catch((error) => {
@@ -100,4 +99,4 @@ async function initProject(projectName) {
   }
 }
 
-module.exports = initProject;
+export { createProject };
