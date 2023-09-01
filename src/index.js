@@ -1,7 +1,7 @@
 import { program } from 'commander';
 import pkg from '../package.json' assert { type: 'json' };
-import dlTemplete from './lib/download.js';
-import { createProject } from './lib/init.js';
+import { createProject } from './lib/create.js';
+import { dlTemplate } from './lib/download.js';
 import setMirror from './lib/mirror.js';
 import updateChk from './lib/update.js';
 
@@ -23,9 +23,6 @@ program
   });
 
 // upgrade 检测更新
-// 声明命令
-// 描述信息，在帮助信息时显示
-// 执行 lib/update.js里面的逻辑
 program
   .command('upgrade')
   .description('检测并升级脚手架的版本')
@@ -33,7 +30,7 @@ program
     updateChk();
   });
 
-// mirror 切换镜像链接
+// mirror 修改下载路径
 program
   .command('mirror <template_mirror>')
   .description('设置项目模板的下载路径')
@@ -46,7 +43,7 @@ program
   .command('template')
   .description('下载项目模板')
   .action(() => {
-    dlTemplete();
+    dlTemplate();
   });
 
 // 解析命令行参数

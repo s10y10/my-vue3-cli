@@ -13,7 +13,7 @@ const tplPath = path.resolve(__dirname, '../template');
 
 const zipFilename = 'vue3-vite-template.zip';
 
-async function dlTemplete() {
+async function dlTemplate() {
   const exist = await fse.pathExists(cfgPath);
   if (exist) {
     await dlAction();
@@ -66,4 +66,4 @@ async function dlAction() {
   dlSpinner.succeed();
 }
 
-export default dlTemplete;
+export { dlTemplate };
