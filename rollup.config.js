@@ -22,4 +22,14 @@ export default {
       preferBuiltins: true,
     }),
   ],
+  onwarn(warning) {
+    // 跳过某些警告
+    // 在某些Rollup版本中应该拦截...但实际上没有
+    if (warning.code === 'THIS_IS_UNDEFINED') {
+      return;
+    } else if (warning.code === 'CIRCULAR_DEPENDENCY') {
+      return;
+    }
+    console.warn(warning.message);
+  },
 };

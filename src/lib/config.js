@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 
 // 声明配置文件
 const jsonConfig = {
-  name: 'sy-cli-vite',
+  name: 'tfc',
   mirror: 'https://s10y10.github.io/',
 };
 

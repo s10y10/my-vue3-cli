@@ -7,7 +7,7 @@ import updateChk from './lib/update.js';
 
 // 添加说明和版本号
 program
-  .name('sy-cli-vite')
+  .name('tfc')
   .description('创建vite项目的脚手架工具')
   .usage('<commands [options]>')
   .helpOption('-h, --help', '显示可使用命令提示')

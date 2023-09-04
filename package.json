@@ -1,5 +1,5 @@
 {
-  "name": "@sy/cli-vite",
+  "name": "tpl-fe-cli",
   "version": "0.0.1",
   "main": "./dist/index.cjs",
   "type": "module",
@@ -7,7 +7,7 @@
     "node": ">=18"
   },
   "bin": {
-    "sy-cli-vite": "./dist/index.cjs"
+    "tfc": "./dist/index.cjs"
   },
   "files": [
     "dist"
