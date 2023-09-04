@@ -8,7 +8,7 @@ npm i -g tpl-fe-cli
 ## 使用
 
 ```
-tfc <command [options]>
+tfc <commands [options]>
 ```
 
 ## 命令说明

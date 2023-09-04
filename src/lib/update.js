@@ -9,9 +9,7 @@ import pkg from '../../package.json' assert { type: 'json' };
 
 async function updateChk() {
   try {
-    const info = await pkgJson('@17jx/jxjs-cli', {
-      registryUrl: 'https://npmjs.com',
-    });
+    const info = await pkgJson(pkg.name);
     const currentVersion = pkg.version;
     const latestVersion = info.version;
     if (semver.gt(latestVersion, currentVersion)) {
