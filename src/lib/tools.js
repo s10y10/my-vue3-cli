@@ -9,8 +9,11 @@ const getJsonPath = () => {
   return path.resolve(getDirname(), '../config.json');
 };
 
-const getTplPath = (tplType) => {
-  return path.resolve(getDirname(), 'template', tplType);
+const getTplPath = (onlyDownload = false) => {
+  if (onlyDownload) {
+    return path.resolve(process.cwd(), 'tpl');
+  }
+  return path.resolve(getDirname(), 'tpl');
 };
 
 export const tools = {

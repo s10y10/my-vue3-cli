@@ -33,19 +33,19 @@ program
 
 // mirror 修改下载路径
 program
-  .command('mirror <template_mirror>')
+  .command('mirror <tpl_mirror>')
   .description('设置项目模板的下载路径')
   .action((tplMirror) => {
     setMirror(tplMirror);
   });
 
-//template 下载/更新模版
+//tpl 下载/更新模版
 program
-  .command('template')
+  .command('tpl')
   .description('下载项目模板')
   .action(async () => {
-    const tplType = await prompt.getTplType();
-    dlTemplate(tplType);
+    const tplType = await prompt.getTplType('请选择要下载的项目模板');
+    dlTemplate(tplType, true);
   });
 
 // 解析命令行参数

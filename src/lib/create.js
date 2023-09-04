@@ -18,25 +18,26 @@ async function createProject(projectName) {
     initSpinner.start();
 
     // 声明目录
-    const templatePath = tools.getTplPath(tplType);
+    const tplPath = tools.getTplPath();
+    await fse.remove(tplPath);
+    await fse.ensureDir(tplPath);
     const targetPath = path.resolve(process.cwd(), projectName);
 
-    const tempalteExists = await fse.pathExists(templatePath);
-    if (!tempalteExists) {
-      await dlTemplate(tplType);
-    }
     try {
-      await fse.copy(templatePath, targetPath);
+      // 下载模板并拷贝到项目目录
+      await dlTemplate(tplType);
+      await fse.copy(tplPath, targetPath);
+      await fse.remove(tplPath);
     } catch (err) {
       console.log(symbols.error, chalk.red(`拉取模板失败. ${err}`));
       process.exit();
     }
+
+    // 替换模板项目内容
     const multiMeta = {
       project_name: projectName,
     };
-
     const multiFiles = [`${targetPath}/package.json`];
-
     for (let i = 0; i < multiFiles.length; i++) {
       try {
         const filesContent = await fse.readFile(multiFiles[i], 'utf8');
@@ -50,9 +51,11 @@ async function createProject(projectName) {
     }
     initSpinner.text = '初始化项目成功!';
     initSpinner.succeed();
+
+    // 输出项目启动提示
     console.log(`
             启动项目:
-              cd ${chalk.yellow(projectName)}
+              ${chalk.yellow(`cd ${projectName}`)}
               ${chalk.yellow('npm install')}
               ${chalk.yellow('npm run dev')}
           `);
