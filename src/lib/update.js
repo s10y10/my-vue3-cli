@@ -16,9 +16,7 @@ async function updateChk() {
     const latestVersion = info.version;
     if (semver.gt(latestVersion, currentVersion)) {
       console.log(
-        `New version availabel: ${chalk.cyan(
-          latestVersion
-        )}, it's recommended that you update befor using.`
+        `有最新的脚手架版本: ${chalk.cyan(latestVersion)}, 建议您在使用前更新`
       );
     } else {
       console.log('No new version is available');
@@ -28,4 +26,4 @@ async function updateChk() {
   }
 }
 
-export default updateChk;
+export { updateChk };

@@ -2,8 +2,9 @@ import { program } from 'commander';
 import pkg from '../package.json' assert { type: 'json' };
 import { createProject } from './lib/create.js';
 import { dlTemplate } from './lib/download.js';
-import setMirror from './lib/mirror.js';
-import updateChk from './lib/update.js';
+import { setMirror } from './lib/mirror.js';
+import { prompt } from './lib/prompt.js';
+import { updateChk } from './lib/update.js';
 
 // 添加说明和版本号
 program
@@ -25,7 +26,7 @@ program
 // upgrade 检测更新
 program
   .command('upgrade')
-  .description('检测并升级脚手架的版本')
+  .description('检测脚手架的版本')
   .action(() => {
     updateChk();
   });
@@ -42,8 +43,9 @@ program
 program
   .command('template')
   .description('下载项目模板')
-  .action(() => {
-    dlTemplate();
+  .action(async () => {
+    const tplType = await prompt.getTplType();
+    dlTemplate(tplType);
   });
 
 // 解析命令行参数

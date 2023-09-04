@@ -4,27 +4,28 @@ import fse from 'fs-extra';
 import fetch from 'node-fetch';
 import ora from 'ora';
 import path from 'path';
-import { fileURLToPath } from 'url';
-import defConfig from './config.js';
+import { defConfig } from './config.js';
+import { tools } from './tools.js';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const cfgPath = path.resolve(__dirname, '../config.json');
-const tplPath = path.resolve(__dirname, '../template');
+const cfgPath = tools.getJsonPath();
+const zipFilenameDic = {
+  vue: 'vue3-vite-template.zip',
+  react: 'vue3-vite-template.zip',
+};
 
-const zipFilename = 'vue3-vite-template.zip';
-
-async function dlTemplate() {
+async function dlTemplate(tplType) {
   const exist = await fse.pathExists(cfgPath);
   if (exist) {
-    await dlAction();
+    await dlAction(tplType);
   } else {
     await defConfig();
-    await dlAction();
+    await dlAction(tplType);
   }
 }
 
-async function dlAction() {
+async function dlAction(tplType) {
   try {
+    const tplPath = tools.getTplPath(tplType);
     await fse.remove(tplPath);
     await fse.ensureDir(tplPath);
   } catch (err) {
@@ -36,8 +37,10 @@ async function dlAction() {
   const dlSpinner = ora(chalk.cyan('Downloading template...'));
   dlSpinner.start();
 
+  // 声明路径
+  const zipFilename = zipFilenameDic[tplType];
   const downloadUrl = jsonConfig.mirror + zipFilename;
-  const targetDir = path.resolve(__dirname, '../template/');
+  const targetDir = path.resolve(__dirname, 'template');
   const targetFile = path.resolve(targetDir, zipFilename);
 
   try {

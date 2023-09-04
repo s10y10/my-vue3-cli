@@ -1,12 +1,10 @@
 import chalk from 'chalk';
 import fse from 'fs-extra';
 import symbols from 'log-symbols';
-import path from 'path';
-import defConfig from './config.js';
-import { fileURLToPath } from 'url';
+import { defConfig } from './config.js';
+import { tools } from './tools.js';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const cfgPath = path.resolve(__dirname, '../config.json');
+const cfgPath = tools.getJsonPath();
 
 async function setMirror(link) {
   //判断config.json是否已经存在,存在就写入配置,不存在先生成config.json
@@ -24,11 +22,11 @@ async function mirrorAction(link) {
     const jsonConfig = await fse.readJson(cfgPath);
     jsonConfig.mirror = link;
     await fse.writeJson(cfgPath, jsonConfig);
-    console.log(symbols.success, 'Set the mirror successful.');
+    console.log(symbols.success, '设置镜像地址成功');
   } catch (e) {
-    console.log(symbols.error, chalk.red(`Set the mirror failed. ${e}`));
+    console.log(symbols.error, chalk.red(`设置镜像地址失败 ${e}`));
     process.exit();
   }
 }
 
-export default setMirror;
+export { setMirror };

@@ -1,31 +1,29 @@
 import chalk from 'chalk';
 import fse from 'fs-extra';
 import handlebars from 'handlebars';
-import inquirer from 'inquirer';
 import symbols from 'log-symbols';
 import ora from 'ora';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import { dlTemplate } from './download.js';
+import { prompt } from './prompt.js';
+import { tools } from './tools.js';
 
 // 创建项目
 async function createProject(projectName) {
   await checkDirExists(projectName);
-
   try {
-    const templateType = await getTemplateType();
-
+    const tplType = await prompt.getTplType();
+    // 添加loading
     const initSpinner = ora(chalk.cyan('正在准备初始化项目...'));
     initSpinner.start();
 
-    const __dirname = path.dirname(fileURLToPath(import.meta.url));
-    const templatePath = path.resolve(__dirname, '../template/');
-    const LCProjectName = projectName.toLowerCase();
-    const targetPath = `${processPath}/${LCProjectName}`;
+    // 声明目录
+    const templatePath = tools.getTplPath(tplType);
+    const targetPath = path.resolve(process.cwd(), projectName);
 
     const tempalteExists = await fse.pathExists(templatePath);
     if (!tempalteExists) {
-      await dlTemplate();
+      await dlTemplate(tplType);
     }
     try {
       await fse.copy(templatePath, targetPath);
@@ -34,7 +32,7 @@ async function createProject(projectName) {
       process.exit();
     }
     const multiMeta = {
-      project_name: LCProjectName,
+      project_name: projectName,
     };
 
     const multiFiles = [`${targetPath}/package.json`];
@@ -54,12 +52,12 @@ async function createProject(projectName) {
     initSpinner.succeed();
     console.log(`
             启动项目:
-              cd ${chalk.yellow(LCProjectName)}
+              cd ${chalk.yellow(projectName)}
               ${chalk.yellow('npm install')}
               ${chalk.yellow('npm run dev')}
           `);
   } catch (err) {
-    console.log(symbols.error, chalk.red(error));
+    console.log(symbols.error, chalk.red(err));
     process.exit();
   }
 }
@@ -71,28 +69,6 @@ async function checkDirExists(projectName) {
     console.log(symbols.error, chalk.red('当前目录已经有同名的项目了'));
     process.exit();
   }
-}
-
-// 通过交互获取用户选择的模板类型
-async function getTemplateType() {
-  const { templateType } = await inquirer.prompt([
-    {
-      type: 'list',
-      name: 'templateType',
-      message: '请选择要创建的项目前端框架',
-      choices: [
-        {
-          name: 'vue',
-          value: 'vue',
-        },
-        {
-          name: 'react',
-          value: 'react',
-        },
-      ],
-    },
-  ]);
-  return templateType;
 }
 
 export { createProject };
